@@ -6,49 +6,50 @@ repo_url: https://github.com/Joao-kouznetz/ann-dl
 repo_name: Joao-kouznetz/ann-dl
 
 theme:
-  name: material
-  language: pt-BR
-  palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: indigo
-      accent: blue
-      toggle:
-        icon: material/brightness-7
-        name: Usar tema escuro
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: indigo
-      accent: blue
-      toggle:
-        icon: material/brightness-4
-        name: Usar tema claro
-  features:
-    - navigation.instant
-    - navigation.top
-    - navigation.tracking
-    - content.code.copy
+    name: material
+    language: pt-BR
+    palette:
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          primary: indigo
+          accent: blue
+          toggle:
+              icon: material/brightness-7
+              name: Usar tema escuro
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          primary: indigo
+          accent: blue
+          toggle:
+              icon: material/brightness-4
+              name: Usar tema claro
+    features:
+        - navigation.instant
+        - navigation.top
+        - navigation.tracking
+        - content.code.copy
 
 markdown_extensions:
-  - admonition
-  - attr_list
-  - md_in_html
-  - tables
-  - pymdownx.arithmatex:
-      generic: true
-  - pymdownx.details
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.snippets
-  - pymdownx.superfences
+    - admonition
+    - attr_list
+    - md_in_html
+    - tables
+    - pymdownx.arithmatex:
+          generic: true
+    - pymdownx.details
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.snippets
+    - pymdownx.superfences
 
 extra_javascript:
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 extra_css:
-  - stylesheets/extra.css
+    - stylesheets/extra.css
 
 nav:
-  - Início: index.md
-  - Exercícios:
-      - Data: exercises/data/index.md
+    - Início: index.md
+    - Exercícios:
+          - Data: exercises/data/index.md
+          - Perceptron: exercises/perceptron/index.md
