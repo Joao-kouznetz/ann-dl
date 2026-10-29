@@ -5,6 +5,7 @@ Portfólio de exercícios de **Artificial Neural Networks and Deep Learning**.
 - Site publicado: <https://Joao-kouznetz.github.io/ann-dl/>
 - Exercício Data: <https://Joao-kouznetz.github.io/ann-dl/exercises/data/>
 - Exercício Perceptron: <https://Joao-kouznetz.github.io/ann-dl/exercises/perceptron/>
+- Exercício MLP (Exercise 1): <https://Joao-kouznetz.github.io/ann-dl/exercises/mlp/>
 
 ## Executar localmente
 
