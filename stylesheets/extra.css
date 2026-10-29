@@ -1,0 +1,15 @@
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+  font-size: 0.72rem;
+}
+
+.md-typeset img {
+  display: block;
+  margin: 1.25rem auto;
+  border-radius: 0.35rem;
+}
+
+.md-content__inner {
+  max-width: 68rem;
+}
