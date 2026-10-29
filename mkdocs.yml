@@ -54,3 +54,4 @@ nav:
           - Data: exercises/data/index.md
           - Perceptron: exercises/perceptron/index.md
           - MLP: exercises/mlp/index.md
+          - VAE: exercises/vae/index.md

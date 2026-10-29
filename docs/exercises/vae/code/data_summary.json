@@ -1,0 +1,69 @@
+{
+  "scope": "Exercise 1A only; no model trained and no test metrics computed",
+  "seed": 42,
+  "train_images": 50000,
+  "validation_images": 10000,
+  "test_images": 10000,
+  "batch_size": 128,
+  "training_batch_shape": [
+    128,
+    784
+  ],
+  "training_batch_dtype": "torch.float32",
+  "training_batch_min": 0.0,
+  "training_batch_max": 1.0,
+  "train_validation_disjoint": true,
+  "train_validation_cover_original_training_set": true,
+  "first_10_train_indices": [
+    37542,
+    43087,
+    2992,
+    25810,
+    39634,
+    6425,
+    55768,
+    11034,
+    44310,
+    44384
+  ],
+  "first_10_validation_indices": [
+    59753,
+    9414,
+    10988,
+    15501,
+    49861,
+    36839,
+    28752,
+    18201,
+    14976,
+    32202
+  ],
+  "train_class_counts": [
+    4923,
+    5613,
+    4958,
+    5093,
+    4863,
+    4546,
+    4933,
+    5204,
+    4882,
+    4985
+  ],
+  "validation_class_counts": [
+    1000,
+    1129,
+    1000,
+    1038,
+    979,
+    875,
+    985,
+    1061,
+    969,
+    964
+  ],
+  "versions": {
+    "torch": "2.14.1",
+    "torchvision": "0.29.1"
+  }
+}
