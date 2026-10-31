@@ -5,6 +5,8 @@ ai_use: "OpenAI Codex auxiliou na implementação, execução dos treinamentos, 
 
 # VAE — Reconstrução e espaço latente no MNIST
 
+**Autoria e uso de IA.** Este relatório foi desenvolvido com colaboração do Codex (OpenAI). Para auxiliar no desenvolvimento dos códigos.
+
 **Autor:** João Bresser Pereira<br>
 **Disciplina:** Artificial Neural Networks and Deep Learning — 2026.2
 

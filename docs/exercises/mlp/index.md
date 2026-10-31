@@ -5,6 +5,8 @@ ai_use: "OpenAI Codex auxiliou no código, execução, verificação de gradient
 
 # MLP — Backpropagation passo a passo
 
+**Autoria e uso de IA.** Este relatório foi desenvolvido com colaboração do Codex (OpenAI). Para auxiliar no desenvolvimento dos códigos.
+
 **Autor:** João Bresser Pereira  
 **Disciplina:** Artificial Neural Networks and Deep Learning — 2026.2
 

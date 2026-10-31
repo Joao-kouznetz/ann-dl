@@ -36,6 +36,12 @@ prefix = prefix.replace(
     "OpenAI Codex auxiliou na elaboração e conferência dos cálculos, na redação das derivações em Markdown e na publicação da página.",
     "OpenAI Codex auxiliou no código, execução, verificação de gradientes, gráficos e redação dos quatro exercícios.",
 )
+# Preservar o bloco de autoria ao regenerar o relatório.
+authorship = '**Autoria e uso de IA.** Este relatório foi desenvolvido com colaboração do Codex (OpenAI). Para auxiliar no desenvolvimento dos códigos.'
+if authorship not in prefix:
+    title = next(line for line in prefix.splitlines() if line.startswith("# "))
+    prefix = prefix.replace(title + "\n", title + "\n\n" + authorship + "\n", 1)
+
 text = f"""
 ## Código reproduzível
 
