@@ -5,8 +5,8 @@ Portfólio de exercícios de **Artificial Neural Networks and Deep Learning**.
 - Site publicado: <https://Joao-kouznetz.github.io/ann-dl/>
 - Exercício Data: <https://Joao-kouznetz.github.io/ann-dl/exercises/data/>
 - Exercício Perceptron: <https://Joao-kouznetz.github.io/ann-dl/exercises/perceptron/>
-- Exercício MLP (Exercise 1): <https://Joao-kouznetz.github.io/ann-dl/exercises/mlp/>
-- Exercício VAE (início — Exercise 1A): <https://Joao-kouznetz.github.io/ann-dl/exercises/vae/>
+- Exercício MLP: <https://Joao-kouznetz.github.io/ann-dl/exercises/mlp/>
+- Exercício VAE: <https://Joao-kouznetz.github.io/ann-dl/exercises/vae/>
 
 ## Executar localmente
 
@@ -23,11 +23,22 @@ Para recriar os resultados e as seis figuras:
 python docs/exercises/perceptron/code/run_analysis.py
 ```
 
-Para reproduzir a preparação do MNIST do exercício VAE:
+Para reproduzir os exercícios MLP e VAE:
 
 ```bash
+python docs/exercises/mlp/code/run_analysis.py
+python docs/exercises/mlp/code/write_report.py
 python -m pip install -r docs/exercises/vae/code/requirements.txt
 python docs/exercises/vae/code/prepare_data.py
+python docs/exercises/vae/code/train.py
+python docs/exercises/vae/code/write_report.py
 ```
 
 O script baixa o MNIST na primeira execução. Os dados ficam fora do controle de versão.
+
+Notebooks: [MLP](docs/exercises/mlp/code/MLP.ipynb) e [VAE](docs/exercises/vae/code/VAE.ipynb).
+O MLP usa apenas NumPy na rede; o VAE usa PyTorch CPU. O download e o treinamento
+podem levar alguns minutos. As sementes, curvas e métricas medidas estão nos relatórios.
+
+MLP e VAE foram concluídos com auxílio de inteligência artificial (OpenAI Codex),
+incluindo código, execução dos experimentos, análises e redação.

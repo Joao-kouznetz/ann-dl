@@ -63,7 +63,7 @@
     964
   ],
   "versions": {
-    "torch": "2.14.1",
-    "torchvision": "0.29.1"
+    "torch": "2.15.0+cpu",
+    "torchvision": "0.29.2+cpu"
   }
 }
