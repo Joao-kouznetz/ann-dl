@@ -1,0 +1,1046 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Portfólio de exercícios de Artificial Neural Networks and Deep Learning">
+      
+      
+        <meta name="author" content="João Bresser Pereira">
+      
+      
+        <link rel="canonical" href="https://Joao-kouznetz.github.io/ann-dl/exercises/vae/">
+      
+      
+        <link rel="prev" href="../mlp/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>VAE - ANN-DL — João Bresser Pereira</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vae-reconstrucao-e-espaco-latente-no-mnist" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="ANN-DL — João Bresser Pereira" class="md-header__button md-logo" aria-label="ANN-DL — João Bresser Pereira" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ANN-DL — João Bresser Pereira
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              VAE
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Usar tema escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Usar tema escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Usar tema claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Usar tema claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joao-kouznetz/ann-dl" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joao-kouznetz/ann-dl
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ANN-DL — João Bresser Pereira" class="md-nav__button md-logo" aria-label="ANN-DL — João Bresser Pereira" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ANN-DL — João Bresser Pereira
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joao-kouznetz/ann-dl" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joao-kouznetz/ann-dl
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exercícios
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Exercícios
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perceptron/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Perceptron
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    VAE
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    VAE
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#codigo-reproduzivel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código reproduzível
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise 1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-load-and-split-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      A — Load and split the data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-build-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      B — Build the model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-train" class="md-nav__link">
+    <span class="md-ellipsis">
+      C — Train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-reconstructions-and-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      D — Reconstructions and samples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      E — Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-train-a-2-d-vae" class="md-nav__link">
+    <span class="md-ellipsis">
+      A — Train a 2-D VAE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-the-encoded-test-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      B — The encoded test set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-decoded-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      C — The decoded plane
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-interpolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      D — Interpolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      E — Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#codigo-reproduzivel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código reproduzível
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise 1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-load-and-split-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      A — Load and split the data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-build-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      B — Build the model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-train" class="md-nav__link">
+    <span class="md-ellipsis">
+      C — Train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-reconstructions-and-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      D — Reconstructions and samples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      E — Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-train-a-2-d-vae" class="md-nav__link">
+    <span class="md-ellipsis">
+      A — Train a 2-D VAE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-the-encoded-test-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      B — The encoded test set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-decoded-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      C — The decoded plane
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-interpolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      D — Interpolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      E — Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="vae-reconstrucao-e-espaco-latente-no-mnist">VAE — Reconstrução e espaço latente no MNIST</h1>
+<p><strong>Autoria e uso de IA.</strong> Este relatório foi desenvolvido com colaboração do Codex (OpenAI). Para auxiliar no desenvolvimento dos códigos.</p>
+<p><strong>Autor:</strong> João Bresser Pereira<br>
+<strong>Disciplina:</strong> Artificial Neural Networks and Deep Learning — 2026.2</p>
+<p><a href="https://insper.github.io/ann-dl/2026.2/exercises/vae/">Enunciado</a> · <a href="code/VAE.ipynb">Notebook executável</a> · <a href="code/results.json">Resultados completos</a>.</p>
+<p>O mesmo VAE é treinado com d=16 e d=2. Os rótulos só são usados para colorir e selecionar exemplos
+depois do treinamento; não entram no encoder, decoder ou perda. Não usamos uma classe pronta de VAE.</p>
+<h2 id="codigo-reproduzivel">Código reproduzível</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/exercises/vae/code/requirements.txt
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>python<span class="w"> </span>docs/exercises/vae/code/prepare_data.py
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>python<span class="w"> </span>docs/exercises/vae/code/train.py
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>docs/exercises/vae/code/write_report.py
+</code></pre></div>
+<p><a href="code/vae.py">Modelo e perda</a> · <a href="code/train.py">Treinamento e figuras</a> · <a href="code/prepare_data.py">Preparação</a>.
+O MNIST é baixado na primeira execução. Dados e checkpoints ficam fora do Git; relatório, resultados
+e figuras são versionados. Foram usados PyTorch <strong>2.15.0+cpu</strong>, torchvision <strong>0.29.2+cpu</strong>,
+CPU com duas threads e algoritmos determinísticos. Tempo medido: 130.8s (d=16) e
+142.8s (d=2), sem incluir o download. Hardware e versões podem alterar os resultados finais.</p>
+<h2 id="exercise-1">Exercise 1</h2>
+<h3 id="a-load-and-split-the-data">A — Load and split the data</h3>
+<p>Usamos MNIST de torchvision: pixels uint8 são convertidos a float32 em [0,1] e achatados em 784
+entradas. O treino oficial de 60.000 imagens é dividido com random_split e um gerador dedicado
+com seed 42: <strong>50.000 treino e 10.000 validação</strong>. O teste oficial tem <strong>10.000 imagens</strong>.
+A divisão não é estratificada, mas seus índices são disjuntos e cobrem o treino original inteiro.
+Os primeiros cinco índices de treino são <strong>37542, 43087, 2992, 25810 e 39634</strong>;
+os de validação, <strong>59753, 9414, 10988, 15501 e 49861</strong>. As contagens por dígito e as verificações
+estão em <a href="code/data_summary.json">data_summary.json</a>.</p>
+<p>Os loaders usam batch 128 e somente o treino é embaralhado. Para acelerar a execução em CPU,
+train.py carrega os mesmos índices em tensores, dividindo os pixels por 255, sem mudar o split ou
+a normalização. O último batch menor recebe o peso proporcional ao seu tamanho nas médias.</p>
+<h3 id="b-build-the-model">B — Build the model</h3>
+<p>Encoder <strong>784 → 512 → 256</strong>, ReLU após as duas camadas; heads lineares <strong>256 → d</strong> para μ e
+log σ². Decoder <strong>d → 256 → 512 → 784</strong>, ReLU nas ocultas e sigmoid na saída. Primeiro, <strong>d=16</strong>.</p>
+<p>A reparametrização foi implementada explicitamente:</p>
+<div class="arithmatex">\[\epsilon\sim\mathcal N(0,I),\qquad z=\mu+\exp(\tfrac12\log\sigma^2)\odot\epsilon.\]</div>
+<p>A imagem reconstruída é decoder(z). Cada termo é somado nas dimensões e depois dividido pelo
+número de imagens B do batch:</p>
+<div class="arithmatex">\[R=-\frac1B\sum_{n,j}[x_{nj}\log\hat x_{nj}+(1-x_{nj})\log(1-\hat x_{nj})],\]</div>
+<div class="arithmatex">\[K=\frac1{2B}\sum_{n,i}(\mu_{ni}^2+\exp(\log\sigma_{ni}^2)-1-\log\sigma_{ni}^2),\qquad L=R+K.\]</div>
+<p>Usamos β=1. BCE corresponde à hipótese de saída Bernoulli, adequada ao exercício com pixels
+normalizados e sigmoid; MSE corresponderia a uma hipótese Gaussiana. reduction='sum' na BCE evita
+reduzir o termo de reconstrução por um fator extra de 784. A KL é a expressão fechada escrita no
+código, sem torch.distributions.kl_divergence.</p>
+<h3 id="c-train">C — Train</h3>
+<p>Adam, taxa <strong>0,001</strong>, batch <strong>128</strong>, <strong>20 épocas</strong>, sem early stopping ou seleção por teste.
+Antes de cada modelo: torch.manual_seed(42); cada loader de treino recebe um gerador novo com seed 42.
+A validação acompanha os dois termos ao fim de cada época, sem backward. Os pesos finais da época
+20 são usados no teste. Não ajustamos hiperparâmetros para aproximar os números de referência.</p>
+<table>
+<thead>
+<tr>
+<th>Modelo</th>
+<th style="text-align: right;">Reconstrução no teste</th>
+<th style="text-align: right;">KL no teste</th>
+<th style="text-align: right;">Soma / ELBO negativo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d=16</td>
+<td style="text-align: right;"><strong>81.5687</strong></td>
+<td style="text-align: right;"><strong>19.5978</strong></td>
+<td style="text-align: right;"><strong>101.1665</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Todas as perdas estão em <strong>nats por imagem</strong>. A avaliação usa uma amostra de z por imagem, com gerador
+local fixo (seed 123 no teste, 2026 na validação). A soma é uma estimativa Monte Carlo do ELBO negativo,
+não o negativo da log-verossimilhança marginal exata. A KL é calculada analiticamente. A reconstrução
+por μ da Figura 2 é determinística e não substitui essa avaliação estocástica.</p>
+<p><img alt="Figura 1 — Reconstrução e KL por época" src="figures/figure1.png" /></p>
+<p>No treino, a reconstrução vai de <strong>172.0563</strong> a
+<strong>80.2701</strong>; KL, de <strong>7.5264</strong> a
+<strong>20.2162</strong>. Na validação, a KL inicial/final é
+<strong>13.0235 / 19.5547</strong>. Os termos do treino são médias
+ponderadas durante as atualizações da época; a validação mede o modelo congelado ao final dela.</p>
+<h3 id="d-reconstructions-and-samples">D — Reconstructions and samples</h3>
+<p><img alt="Figura 2 — Primeiro exemplo de cada dígito e reconstrução" src="figures/figure2.png" /></p>
+<p>As colunas vão de 0 a 9. Índices zero-based no teste: <strong>[3, 2, 1, 18, 4, 8, 11, 0, 61, 7]</strong>.
+A linha de baixo usa decoder(μ), sem sortear z, isolando a reconstrução representativa de cada
+imagem e evitando que ruído de amostragem mude a comparação visual.</p>
+<p><img alt="Figura 3 — 64 amostras do prior" src="figures/figure3.png" /></p>
+<p>A grade 8×8 vem de 64 vetores N(0,I) de dimensão 16, sorteados <strong>depois de torch.manual_seed(0)</strong>.
+São imagens novas geradas pelo decoder, sem selecionar os melhores exemplos.</p>
+<h3 id="e-analysis">E — Analysis</h3>
+<ol>
+<li>O otimizador aceita pagar mais KL quando a redução de reconstrução compensa: codificar
+   informação específica da imagem afasta q(z|x) do prior, mas ajuda a reconstruir. A KL não precisa
+   cair junto com a soma. Neste treino a soma inicial/final é
+   <strong>179.5827 / 100.4863</strong>.</li>
+<li>Há duas razões distintas para amostras piores: o prior pode sortear regiões pouco cobertas pelo
+   posterior agregado, pois a regularização não torna as distribuições exatamente iguais; e o
+   decoder sigmoid retorna probabilidades por pixel, produzindo contornos médios quando há
+   ambiguidade. A imagem de probabilidades é mostrada diretamente, sem sortear pixels Bernoulli.
+   A limitação da hipótese de pixels condicionalmente independentes contribui para borramento.</li>
+<li>Decodificar μ controla o acaso na comparação original/reconstrução. Não é garantia matemática
+   de ser a melhor reconstrução e decoder(E[z]) não precisa ser E[decoder(z)], pois o decoder é
+   não linear. Aqui é a convenção solicitada para a Figura 2.</li>
+</ol>
+<h2 id="exercise-2">Exercise 2</h2>
+<h3 id="a-train-a-2-d-vae">A — Train a 2-D VAE</h3>
+<p>Só alteramos <strong>d de 16 para 2</strong>. Arquitetura restante, split, seed, β, Adam, batch e 20 épocas são
+iguais. O número de parâmetros muda nas heads e na entrada do decoder por consequência de d.</p>
+<table>
+<thead>
+<tr>
+<th>d</th>
+<th style="text-align: right;">Reconstrução no teste</th>
+<th style="text-align: right;">KL no teste</th>
+<th style="text-align: right;">Soma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16</td>
+<td style="text-align: right;">81.5687</td>
+<td style="text-align: right;">19.5978</td>
+<td style="text-align: right;">101.1665</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align: right;">135.6478</td>
+<td style="text-align: right;">6.5727</td>
+<td style="text-align: right;">142.2204</td>
+</tr>
+</tbody>
+</table>
+<p>O custo medido de compressão para duas coordenadas é <strong>54.0790
+nats adicionais de reconstrução por imagem</strong>. KL menor não implica modelo melhor: há menos dimensões
+para transmitir informação e para pagar regularização.</p>
+<h3 id="b-the-encoded-test-set">B — The encoded test set</h3>
+<p><img alt="Figura 4 — Todas as médias de teste, por dígito" src="figures/figure4.png" /></p>
+<p>Cada um dos 10.000 pontos é μ de uma imagem de teste; a cor é o rótulo real, visto somente para o
+gráfico. Separação visual não é acurácia de um classificador. As nuvens se sobrepõem: o objetivo
+foi reconstrução regularizada, não maximizar a separação supervisionada de dígitos.</p>
+<h3 id="c-the-decoded-plane">C — The decoded plane</h3>
+<p><img alt="Figura 5 — Plano latente decodificado" src="figures/figure5.png" /></p>
+<p>Usamos <strong>15 quantis igualmente espaçados entre 0,05 e 0,95</strong>, transformados por norm.ppf.
+Intervalos entre quantis consecutivos têm a mesma massa normal, <strong>0,9/14</strong>, logo os retângulos
+entre pontos adjacentes têm massa <strong>(0,9/14)²</strong> sob o prior independente. As 225 imagens mostram
+pontos representativos, não 225 caixas com limites definidos. A grade cobre a região entre os
+quantis 5% e 95%, deixando as caudas de fora. Os rótulos dos eixos são os quantis normais reais;
+o espaço visual entre tiles é uniforme em probabilidade, não em distância euclidiana z.</p>
+<h3 id="d-interpolation">D — Interpolation</h3>
+<p>Índices escolhidos no teste: <strong>0 e 1</strong>,
+dígitos <strong>7 e 2</strong>. São exemplos diferentes
+fixados antes de inspecionar a qualidade da interpolação; não buscamos uma trajetória favorável.</p>
+<p><img alt="Figura 6 — Pixels versus espaço latente" src="figures/figure6.png" /></p>
+<p>A primeira linha é (1−t)xₐ+t xᵦ. A segunda usa o modelo <strong>d=16</strong>, decodificando
+(1−t)μₐ+t μᵦ. Há dez valores de t igualmente espaçados de 0 a 1. As extremidades inferiores são
+reconstruções dos exemplos, não cópias das imagens originais.</p>
+<h3 id="e-analysis_1">E — Analysis</h3>
+<p>Na Figura 4, os dígitos <strong>4 e 9</strong> se sobrepõem na região à direita do centro, aproximadamente
+μ1 entre 0,3 e 0,8 e μ2 entre −0,5 e 0,3. Na Figura 5, nas colunas z1≈0,33–0,70 e linhas
+z2≈−0,16–0,33, aparecem transições entre 4 e 9: o traço superior se fecha gradualmente, enquanto
+a haste permanece, produzindo imagens intermediárias ambíguas. Os limites são leituras visuais
+aproximadas, não uma classificação das células. Há também uma transição 0/6 à esquerda do mapa.
+Duas coordenadas precisam compartilhar informação sobre identidade,
+espessura, inclinação e estilo. O aumento medido de reconstrução confirma a perda de detalhe;
+KL menor sozinha não mede qualidade. A grade mostra mudanças suaves de traço e regiões ambíguas,
+não um catálogo de classes isoladas.</p>
+<p>Na Figura 6, a mistura de pixels sobrepõe traços e apaga intensidades sem respeitar a estrutura de
+um dígito. O caminho latente passa pelo decoder, que aprendeu combinações de traços e tende a gerar
+formas mais coerentes, mas não há garantia de que toda interpolação passe só por dígitos legíveis.
+A regularização favorece continuidade perto das regiões treinadas, sem assegurar cobertura perfeita.</p>
+<h2 id="results-summary">Results summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Quantity</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Ex. 1 — reconstrução, KL e ELBO negativo no teste, d=16</td>
+<td>81.5687; 19.5978; 101.1665 nats/imagem</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ex. 1 — KL de validação, primeira/última época</td>
+<td>13.0235; 19.5547 nats/imagem</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ex. 2 — reconstrução e KL no teste, d=2</td>
+<td>135.6478; 6.5727 nats/imagem</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ex. 2 — índices de teste interpolados</td>
+<td>0 e 1, dígitos 7 e 2</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
